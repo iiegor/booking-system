@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgresql-db:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    expose:
+      # Opens port 3306 on the container
+      - '5432'
+    environment:
+      POSTGRES_DB: process-engine
+      POSTGRES_USER: camunda
+      POSTGRES_PASSWORD: camunda
+
+  camunda:
+    image: camunda/camunda-bpm-platform:7.7.0
+    container_name: camunda_bpm
+    environment:
+      DB_DRIVER: org.postgresql.Driver
+      DB_URL: jdbc:postgresql://postgresql-db:5432/process-engine
+      DB_USERNAME: camunda
+      DB_PASSWORD: camunda
+      WAIT_FOR: postgresql-db:5432
+    ports:
+      - '8080:8080'
+    depends_on:
+      - 'postgresql-db'
