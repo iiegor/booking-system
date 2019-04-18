@@ -1,7 +1,5 @@
 const { Client, logger, Variables } = require('camunda-external-task-client-js')
-const sendgrid = require('@sendgrid/mail')
-
-sendgrid.setApiKey('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')
+const email = require('../lib/email')
 
 // configuration for the Client:
 //  - 'baseUrl': url to the Process Engine
@@ -71,7 +69,7 @@ client.subscribe('send-email', async ({ task, taskService }) => {
     // inform about the status and contact details for future
     const product = findProduct(productId)
     
-    sendgrid.send({
+    email.send({
       to: 'dextrackmedia@gmail.com',
       from: 'dextrackmedia@gmail.com',
       subject: 'Information about a requested product',
