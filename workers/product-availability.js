@@ -1,15 +1,6 @@
-const { Client, logger, Variables } = require('camunda-external-task-client-js')
+const { logger, Variables } = require('camunda-external-task-client-js')
+const camunda = require('../lib/camunda')
 const email = require('../lib/email')
-
-// configuration for the Client:
-//  - 'baseUrl': url to the Process Engine
-//  - 'logger': utility to automatically log important events
-//  - 'asyncResponseTimeout': long polling timeout (then a new request will be issued)
-const client = new Client({
-  baseUrl: 'http://localhost:8080/engine-rest',
-  use: logger,
-  asyncResponseTimeout: 10000
-})
 
 // Example products
 const products = [
@@ -38,7 +29,7 @@ const checkAvailability = (id, quantity) => {
   return !!product
 }
 
-client.subscribe('check-availability', async ({ task, taskService }) => {
+camunda.subscribe('check-availability', async ({ task, taskService }) => {
   // Business logic here
   const productId = task.variables.get('productId')
   const quantity = task.variables.get('quantity')
@@ -55,7 +46,7 @@ client.subscribe('check-availability', async ({ task, taskService }) => {
   await taskService.complete(task, variables)
 })
 
-client.subscribe('send-email', async ({ task, taskService }) => {
+camunda.subscribe('send-email', async ({ task, taskService }) => {
   // Business logic here
   const productId = task.variables.get('productId')
   const available = task.variables.get('available')
