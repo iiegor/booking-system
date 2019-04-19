@@ -18,8 +18,8 @@ camunda.subscribe('calculate-budget', async ({ task, taskService }) => {
   email.send({
     to: 'dextrackmedia@gmail.com',
     subject: `Here is your budget for ${product.name} (x${quantity})`,
-    text: `<strong>${product.name} (x${quantity})</strong> will be yours for only <strong>120 €</strong>`,
-    html: `<strong>${product.name} (x${quantity})</strong> will be yours for only <strong>120 €</strong>`,
+    text: `<strong>${product.name} (x${quantity})</strong> will be yours for only <strong>${product.price} €</strong>`,
+    html: `<strong>${product.name} (x${quantity})</strong> will be yours for only <strong>${product.price} €</strong>`,
   }).then(() => {
     console.log('> Budget email sent!')
   })
