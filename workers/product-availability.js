@@ -1,27 +1,12 @@
-const { logger, Variables } = require('camunda-external-task-client-js')
+const { Variables } = require('camunda-external-task-client-js')
 const camunda = require('../lib/camunda')
 const email = require('../lib/email')
+const db = require('../lib/db')
 
-// Example products
-const products = [
-  {
-    id: 1,
-    name: 'Pack 6 Green Fees',
-    price: 220,
-    stock: 10,
-  },
-  {
-    id: 2,
-    name: 'Pack 3 Green Fees',
-    price: 128,
-    stock: 1,
-  },
-]
-
-const findProduct = (id) => products.find(product => product.id === id)
+const findProduct = (id) => db.getProducts().find(product => product.id === id)
 
 const checkAvailability = (id, quantity) => {
-  const product = products.find(product => {
+  const product = db.getProducts().find(product => {
     return (product.id === id)
       && (product.stock >= quantity)
   })
@@ -52,20 +37,27 @@ camunda.subscribe('send-email', async ({ task, taskService }) => {
   const available = task.variables.get('available')
   const quantity = task.variables.get('quantity')
   
+  const product = findProduct(productId)
+
   if (available) {
 
-    // send information about the request product
-  } else {
-
-    // inform about the status and contact details for future
-    const product = findProduct(productId)
-    
+    // send information about the requested product
     email.send({
       to: 'dextrackmedia@gmail.com',
-      from: 'dextrackmedia@gmail.com',
-      subject: 'Information about a requested product',
-      text: `We're sorry but <strong>${product.name} (${quantity})</strong> is currently unavailable.`,
-      html: `We're sorry but <strong>${product.name} (${quantity})</strong> is currently unavailable.`,
+      subject: `We're working on your budget`,
+      text: `Congrats! <strong>${product.name} (x${quantity})</strong> is scheduled for an estimated budget by our agents.`,
+      html: `Congrats! <strong>${product.name} (x${quantity})</strong> is scheduled for an estimated budget by our agents.`,
+    }).then(() => {
+      console.log('> Available email sent!')
+    })
+  } else {
+
+    // inform about the status and contact details for future    
+    email.send({
+      to: 'dextrackmedia@gmail.com',
+      subject: 'Information about the requested product',
+      text: `We're sorry but <strong>${product.name} (x${quantity})</strong> is currently unavailable.`,
+      html: `We're sorry but <strong>${product.name} (x${quantity})</strong> is currently unavailable.`,
     }).then(() => {
       console.log('> Unavailable email sent!')
     })

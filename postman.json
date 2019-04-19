@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "e1439b6a-f5ca-4e65-a7ad-de98e867e6d6",
+		"name": "Camunda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Start Instance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"variables\": {\n\t\t\"productId\": {\n\t\t\t\"value\": 1\n\t\t},\n\t\t\"quantity\": {\n\t\t\t\"value\": 3\n\t\t}\n\t} \n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/engine-rest/process-definition/key/product-availability/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"engine-rest",
+						"process-definition",
+						"key",
+						"product-availability",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Variables from running instance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/engine-rest/process-instance/30724a59-6221-11e9-a2c5-0242ac180003/variables",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"engine-rest",
+						"process-instance",
+						"30724a59-6221-11e9-a2c5-0242ac180003",
+						"variables"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List running instances",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"processDefinitionKey\": \"product-availability\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/engine-rest/process-instance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"engine-rest",
+						"process-instance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/engine-rest/task?processDefinitionKey=product-availability",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"engine-rest",
+						"task"
+					],
+					"query": [
+						{
+							"key": "processDefinitionKey",
+							"value": "product-availability"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
