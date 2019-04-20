@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start:gateway": "nodemon gateway/index.js",
-    "start:workers": "nodemon workers/product-availability.js"
+    "start": "pm2 start ecosystem.config.js",
+    "stop": "pm2 delete ecosystem.config.js"
   },
   "author": "Iegor Azuaga <iegorazuaga@gmail.com>",
   "dependencies": {
