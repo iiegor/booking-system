@@ -11,4 +11,8 @@ app.use('/_', needsAuthorization, camundaRoute())
 // Health route
 app.get('/', (req, res) => res.sendStatus(200))
 
-module.exports = app
+const port = process.env.PORT || 8081
+app.listen(port, () => {
+  console.log(`> API Gateway started at http://localhost:${port}`)
+})
+
